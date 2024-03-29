@@ -1,0 +1,70 @@
+<!--  <h1>Player Form</h1>
+<form action="/player/{{player['PLayerID']}}/add">
+  <div>
+    <label for="playername">Enter Player name:</label><br />
+    <input type="text" id="playername" name="playername" /><br />
+  </div>
+  <input type="submit" name="Submit" />
+</form> 
+
+<h4>enter player name</h4>
+<form action="/create_playername" method="get">
+  <div class="mb-2">
+    <label>Enter Player1 Name</label><br />
+    <input type="text" required name="player1" placeholder="Bruce Wayne" />
+  </div>
+  <div class="mb-2">
+    <label>Enter Player2 Name</label><br />
+    <input type="text" required name="player2" placeholder="Bruce Wayne" />
+  </div>
+  <div class="mb-2">
+    <label>Enter Player3 Name</label><br />
+    <input type="text" required name="player3" placeholder="Bruce Wayne" />
+  </div>
+  <div class="mb-2">
+    <label>Enter Player4 Name</label><br />
+    <input type="text" required name="player4" placeholder="Bruce Wayne" />
+  </div>
+  <div class="mb-2">
+    <label>Enter Player5 Name</label><br />
+    <input type="text" required name="player5" placeholder="Bruce Wayne" />
+  </div>
+
+  <input type="submit" name="submit" />
+</form> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form</title>
+  </head>
+  <body>
+    <form action="/store_values" method="post">
+      <table>
+        <tr>
+          <td><input type="text" name="entry1" /></td>
+          <td><input type="text" name="entry2" /></td>
+        </tr>
+        <tr>
+          <td><input type="text" name="entry3" /></td>
+          <td><input type="text" name="entry4" /></td>
+        </tr>
+        <tr>
+          <td><input type="text" name="entry5" /></td>
+          <td><input type="text" name="entry6" /></td>
+        </tr>
+        <tr>
+          <td><input type="text" name="entry7" /></td>
+          <td><input type="text" name="entry8" /></td>
+        </tr>
+        <tr>
+          <td><input type="text" name="entry9" /></td>
+          <td><input type="text" name="entry10" /></td>
+        </tr>
+      </table>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
