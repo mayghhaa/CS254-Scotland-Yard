@@ -27,14 +27,14 @@ def load_players_from_db(playerID):
     except Exception as e:
         print(f"Error loading players from database: {e}")
         return None
-def add_game_entry(game_id, player_id, role):
+def add_game_entry(game_id, playerid, role):
     try:
         with engine.connect() as conn:
             result = conn.execute(
-                text("INSERT INTO games_played (gameid, playerid, role) VALUES (:game_id, :player_id, :role)"),
-                {"game_id": game_id, "player_id": player_id, "role": role}
+                text("INSERT INTO games_played (gameid, playerid, role) VALUES (:game_id, :playerid, :role)"),
+                {"game_id": game_id, "playerid": playerid, "role": role}
             )
-            print(f"Game entry added: Game ID {game_id}, Player ID {player_id}, Role {role}")
+            print(f"Game entry added: Game ID {game_id}, Player ID {playerid}, Role {role}")
             conn.commit()
     except Exception as e:
         print(f"Error during insertion: {e}")
@@ -83,15 +83,32 @@ def add_player_role_to_db(role):
         print(f"Error during insertion: {e}")
               
 
+def game_history(gameid):
+    try:
+        with engine.connect() as conn:
+            # Select playerid and turn_no for the given game_id
+            result = conn.execute(
+                text("SELECT playerid, turnno FROM players"))
+            # Iterate over the result and insert into game_history table
+            for row in result:
+                playerid, turnno = row
+                conn.execute(
+                    text("INSERT INTO game_history (gameid, playerid, turnno) VALUES (:gameid, :playerid, :turnno)"),
+                    {"gameid": gameid, "playerid": playerid, "turnno": turnno}
+                )
+            conn.commit()
+            print("Game history updated successfully!")
+    except Exception as e:
+        print(f"Error updating game history: {e}")
 
 # def add_player_role_to_db(role, positions):
 #     try:
 #         with engine.connect() as conn:
 #             # Update all players' role to 'police' and set their positions
-#             for player_position, player_id in zip(positions, range(1, len(positions) + 1)):
+#             for player_position, playerid in zip(positions, range(1, len(positions) + 1)):
 #                 result1 = conn.execute(
-#                     text("UPDATE players SET role='police', turnno=1, taxi=10, bus=8, ug=4, position=:position WHERE playerid=:player_id"),
-#                     {"position": player_position, "player_id": player_id}
+#                     text("UPDATE players SET role='police', turnno=1, taxi=10, bus=8, ug=4, position=:position WHERE playerid=:playerid"),
+#                     {"position": player_position, "playerid": playerid}
 #                 )
 
 #             # Update players with the specified role to 'MRX'

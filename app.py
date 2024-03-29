@@ -1,9 +1,9 @@
 import random
 from flask import Flask, render_template, request
-from database import add_player_to_db, add_player_role_to_db, load_players_from_db, add_game_entry, leaderboard, game_id
+from database import add_player_to_db, add_player_role_to_db, load_players_from_db, add_game_entry, leaderboard, game_history
 
 app = Flask(__name__)
-
+import random 
 @app.route('/')
 def index():
     return render_template('home.html')
@@ -28,23 +28,25 @@ def store_values():
     leaderboard()
 
     # Start a new game
+    global gameid 
+    gameid = random.randint(1000, 9999)  
+    game_history(gameid)
     start_new_game(role)
 
     return 'New game started successfully!'
 
 def start_new_game(role):
-    game_id = random.randint(1000, 9999)  # Generate a random game ID
-    
-    game_history(game_id)
+    # Generate a random game ID
+   
     # Add entries for each player in the game
     for i in range(2, 11, 2):
-        player_id = request.form[f'entry{i}']
-        role = load_players_from_db(player_id)
+        playerid = request.form[f'entry{i}']
+        role = load_players_from_db(playerid)
         if role:
-            add_game_entry(game_id, player_id, role)
+            add_game_entry(gameid, playerid, role)
         else:
-            print(f"Role not found for player ID: {player_id}")
-        print(game_id, player_id, role)
+            print(f"Role not found for player ID: {playerid}")
+        print(gameid, playerid, role)
 
 if __name__ == "__main__":
     app.run(debug=True)
