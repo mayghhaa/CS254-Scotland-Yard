@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, text
 
 # print(sqlalchemy.__version__)
 
-engine = create_engine("mysql+pymysql://root:MeghaArya@localhost/ScotlandYard?charset=utf8mb4")
+engine = create_engine("mysql+pymysql://root:changeme%403@localhost/Scotland_Yard?charset=utf8mb4")
 
 with engine.connect() as conn:
   result=conn.execute(text("select * from Players"))
@@ -40,16 +40,21 @@ def add_game_entry(game_id, playerid, role):
         print(f"Error during insertion: {e}")
 
 
-def add_player_to_db(player_name, player_score,positions):
+def add_player_to_db(player_name, player_score,positions,gameid):
     try:
         with engine.connect() as conn:
             result = conn.execute(
-                text("INSERT INTO players (player_name, playerid, Current_Location) VALUES (:player_name, :player_score, :pos)"),
+                text("INSERT INTO players (player_name, playerid, Current_Location, Role) VALUES (:player_name, :player_score, :pos, 'police')"),
                 {"player_name": player_name, "player_score": player_score,"pos":positions}
             )
             
             print(f"Player inserted: {player_name}, {player_score}")
             conn.commit()
+            '''conn.execute(
+                text("INSERT INTO game_history(GameId, PlayerID, TurnNo, Start_pos, End_pos) VALUES (:gid, :pid, 1,0,:pos)"),
+                {"gid": gameid, "pid": player_score,"pos":positions}
+            )
+            conn.commit()'''
     except Exception as e:
         print(f"Error during insertion: {e}")
 
@@ -93,7 +98,7 @@ def game_history(gameid):
             for row in result:
                 playerid, turnno = row
                 conn.execute(
-                    text("INSERT INTO game_history (gameid, playerid, turnno) VALUES (:gameid, :playerid, :turnno)"),
+                    text("INSERT INTO game_history (gameid, playerid, turnno, Start_Pos, End_Pos, Transport ) VALUES (:gameid, :playerid, :turnno, 1, 1, 'T')"),
                     {"gameid": gameid, "playerid": playerid, "turnno": turnno}
                 )
             conn.commit()

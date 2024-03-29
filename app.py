@@ -7,9 +7,10 @@ import random
 @app.route('/')
 def index():
     return render_template('home.html')
-
 @app.route('/store_values', methods=['POST'])
 def store_values():
+    global gameid 
+    gameid = random.randint(1000, 9999)  
     entries = {}
     role = request.form['role']
     pos = [1,2,3,4,5]
@@ -21,15 +22,15 @@ def store_values():
         else:  # Even-indexed values
             value = request.form[f'entry{i}']
             entries[key] = value
-            add_player_to_db(key, value,pos[count])
+            add_player_to_db(key, value,pos[count],gameid)
             count = count+1
             add_player_role_to_db(role)
     print(entries, role)
     leaderboard()
 
     # Start a new game
-    global gameid 
-    gameid = random.randint(1000, 9999)  
+   # global gameid 
+   # gameid = random.randint(1000, 9999)  
     game_history(gameid)
     start_new_game(role)
 
